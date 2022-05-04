@@ -41,14 +41,22 @@ namespace TranslatorClient.Service
             {
                 if (withSynonym)
                 {
-                    
-                    foreach (Syn syn in obj.def[0].tr[0].syn)
+   
+                    if (obj.def[0].tr[0].syn != null)
                     {
-                        if (syn != null)
-                            synonyms.Add(syn.text);
+                        foreach (Syn syn in obj.def[0].tr[0].syn)
+                        {
+                            if (syn != null)
+                                synonyms.Add(syn.text);
+                        }
+                        if (synonyms.Count == 0)
+                            synonyms = new List<string>(new[] { "No synonyms found" });
                     }
-                    if (synonyms.Count == 0)
+                    else
+                    {
                         synonyms = new List<string>(new[] { "No synonyms found" });
+                    }
+                    
                 }
                 return new Model.WordsInfo
                 {

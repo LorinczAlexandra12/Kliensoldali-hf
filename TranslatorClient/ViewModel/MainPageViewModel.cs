@@ -15,7 +15,7 @@ namespace TranslatorClient.ViewModel
         private string fromLang = "";
         private string toLang = "";
         private bool withSynonym = false;
-        private WordsInfo WI;
+        private WordsInfo wordsinfo;
 
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
@@ -26,11 +26,11 @@ namespace TranslatorClient.ViewModel
 
         public Model.WordsInfo WordsInfo
         {
-            get{ return WI; }
+            get{ return wordsinfo; }
             set{ 
-                if(value != WI)
+                if(value != wordsinfo)
                 {
-                    WI = value;
+                    wordsinfo = value;
                     OnPropertyChanged();
                 }
             }
@@ -96,7 +96,8 @@ namespace TranslatorClient.ViewModel
                 Languages.Clear();
                 foreach (string lang in ValidLangComb)
                 {
-                    Languages.Add(lang.Split('-')[0]);
+                    if(!Languages.Contains(lang.Split('-')[0]))
+                        Languages.Add(lang.Split('-')[0]);
                 }
                 Languages = Languages.Distinct().ToList();
                 Languages.Sort();
@@ -111,9 +112,9 @@ namespace TranslatorClient.ViewModel
             if(word != null && word != "")
             {
                 if (withSynonym)
-                    WI = await App.Service.GetTranslationAsync(word, FromLang, ToLang, true);
+                    WordsInfo = await App.Service.GetTranslationAsync(word, FromLang, ToLang, true);
                 else
-                    WI = await App.Service.GetTranslationAsync(word, FromLang, ToLang, false);
+                    WordsInfo = await App.Service.GetTranslationAsync(word, FromLang, ToLang, false);
             }
         }
 
